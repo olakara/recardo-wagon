@@ -27,7 +27,7 @@ namespace Movies.Api.Movies
           {
               return NotFound();
           }
-            return await _context.Movies.ToListAsync();
+          return await _context.Movies.ToListAsync();
         }
 
         // GET: api/Movies/5
@@ -38,14 +38,14 @@ namespace Movies.Api.Movies
           {
               return NotFound();
           }
-            var movie = await _context.Movies.FindAsync(id);
+          var movie = await _context.Movies.FindAsync(id);
 
-            if (movie == null)
-            {
-                return NotFound();
-            }
+          if (movie == null)
+          {
+              return NotFound();
+          }
 
-            return movie;
+          return movie;
         }
 
         // PUT: api/Movies/5
@@ -88,10 +88,10 @@ namespace Movies.Api.Movies
           {
               return Problem("Entity set 'MoviesDbContext.Movies'  is null.");
           }
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
+          _context.Movies.Add(movie);
+          await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+          return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
         }
 
         // DELETE: api/Movies/5
