@@ -1,0 +1,6 @@
+﻿services:
+  fourthings:
+    image: four-things
+    build:
+      context: .
+      dockerfile: Dockerfile
