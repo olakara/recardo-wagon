@@ -1,9 +1,24 @@
+using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.AspNetCore.Authorization;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+                .AddNegotiate();
+
+builder.Services.AddAuthorization(options =>
+{
+    // By default, all incoming requests will be authorized according to the default policy.
+    options.FallbackPolicy = options.DefaultPolicy;
+});
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -20,6 +35,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
+app.MapHealthChecks("/health").AllowAnonymous();
 app.MapRazorPages();
 
 app.Run();
