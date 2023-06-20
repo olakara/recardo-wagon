@@ -1,4 +1,12 @@
+using System.Reflection;
+using Application;
+using Application.Common.Behaviors;
+using Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
