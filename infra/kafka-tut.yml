@@ -1,0 +1,50 @@
+version: '3.4'
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper
+    restart: always
+    ports:
+      - '2181:2181'
+    volumes:
+      - './data/zookeeper_data:/bitnami'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: bitnami/kafka
+    ports:
+      - '9092:9092'
+    restart: always
+    volumes:
+      - './data/kafka_data:/bitnami'
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+    depends_on:
+      - zookeeper
+
+  sqldb:
+    image: 'mcr.microsoft.com/mssql/server'
+    restart: always
+    environment:
+      - 'SA_PASSWORD=Pass12345'
+      - 'ACCEPT_EULA=Y'
+    ports:
+      - 1433:1433
+    volumes:
+      - './data/sql_data:/var/opt/mssql'
+
+  mongodb:
+    image: 'mongo:latest'
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongo_data:/data/db
+      
+networks:
+  default:
+    driver: bridge
